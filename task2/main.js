@@ -8,18 +8,20 @@ let substract = document.querySelector("#substract");
 let plus = document.querySelector("#plus");
 let comma = document.querySelector("#comma");
 let equals = document.querySelector("#equals");
-
 let nums = document.querySelectorAll(".num");
 
 let firstValue;
 let secondValue;
 let operation;
 
-// input.addEventListener("keyup", function(){
-//     if(isNaN(Number(input.value))){
-//         input.value=''
-//     }
-// })
+input.addEventListener("input", function (e) {
+  console.log("hello");
+  if (isNaN(Number(this.value)) && this.value != "-") {
+    this.value = "";
+  }
+  console.log("first value", firstValue);
+  console.log("second value", secondValue);
+});
 
 nums.forEach((num) => {
   num.addEventListener("click", function () {
@@ -32,57 +34,85 @@ nums.forEach((num) => {
   });
 });
 
-clearBtn.addEventListener("click", function(){
-    input.value = "";
-    operation = '';
-    firstValue = '';
-    secondValue = '';
-})
+clearBtn.addEventListener("click", function () {
+  input.value = "";
+  operation = "";
+  firstValue = "";
+  secondValue = "";
+});
 
 plus.addEventListener("click", function () {
+  if (!firstValue) {
+    firstValue = input.value;
+  }
   input.value = "";
   operation = "+";
 });
 substract.addEventListener("click", function () {
+  if (!firstValue) {
+    firstValue = input.value;
+  }
   input.value = "";
   operation = "-";
 });
 multiply.addEventListener("click", function () {
+  if (!firstValue) {
+    firstValue = input.value;
+  }
   input.value = "";
   operation = "*";
 });
 division.addEventListener("click", function () {
+  if (!firstValue) {
+    firstValue = input.value;
+  }
   input.value = "";
   operation = "/";
 });
 
-percentage.addEventListener("click", function(){
-    let num = Number(input.value);
-    input.value = num/100
-})
+percentage.addEventListener("click", function () {
+  let num = Number(input.value);
+  input.value = num / 100;
+});
 
-comma.addEventListener("click", function(){
+comma.addEventListener("click", function () {
+  if (!input.value.includes(".")) {
     let num = Number(input.value);
-    input.value = `${num}.`
-})
-plusMinus.addEventListener("click", function(){
-    let num = Number(input.value);
-    input.value = -num
-})
-
+    input.value = `${num}.`;
+  }
+});
+plusMinus.addEventListener("click", function () {
+  let num = Number(input.value);
+  input.value = -num;
+});
 
 equals.addEventListener("click", function () {
-  if (operation === "+") {
-    firstValue = Number(firstValue) + Number(secondValue);
-    input.value = firstValue
-  }else if(operation === "-"){
-    firstValue = Number(firstValue) - Number(secondValue);
-    input.value = firstValue
-  }else if(operation === "*"){
-    firstValue = Number(firstValue) * Number(secondValue);
-    input.value = firstValue
-  }else if(operation === "/"){
-    firstValue = Number(firstValue) / Number(secondValue);
-    input.value = firstValue
+  if (firstValue) {
+    if (!secondValue) {
+      secondValue = input.value;
+    }
+    if (operation === "+") {
+      firstValue = Number(firstValue) + Number(secondValue);
+      secondValue = undefined;
+      operation = "";
+      input.value = firstValue;
+    } else if (operation === "-") {
+      firstValue = Number(firstValue) - Number(secondValue);
+      secondValue = undefined;
+      operation = "";
+      input.value = firstValue;
+    } else if (operation === "*") {
+      firstValue = Number(firstValue) * Number(secondValue);
+      secondValue = undefined;
+      operation = "";
+      input.value = firstValue;
+    } else if (operation === "/") {
+      firstValue = Number(firstValue) / Number(secondValue);
+      secondValue = undefined;
+      operation = "";
+      input.value = firstValue;
+    }
+  } else {
+    alert("add value");
   }
 });
